@@ -1,10 +1,23 @@
 import Link from 'next/link'
 import { useState } from "react";
 import { db } from '../index.js'
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
 
 export default function AboutPage() {
+  const [file, set_file] = useState(null);
   const [name, set_name] = useState("");
+  const handle_file_change = (event) => {
+    const file_ = event.target.files[0];
+    // Check if a file is selected and if it is a PDF file
+    if (file_ && file_.type === 'application/pdf') {
+      set_file(file_);
+      set_name(file_.name.slice(0,-4))
+    } else {
+      alert('Please select a PDF file.');
+    }
+  };
+
+
   async function handle_upload_click() {
     if (name) {
       await setDoc(doc(db, "books", name), {
@@ -14,11 +27,25 @@ export default function AboutPage() {
   }
 
 
+
   return (
     <div>
 
       <Link className="font-mono text-2xl" href="/"><u>Home</u></Link>
       <h1 className="font-mono text-5xl">Upload Page📁</h1>
+      <br />
+      <input type="file" accept=".pdf" onChange={handle_file_change} />
+      {file && (
+        <div className='font-mono'>
+          <h3>Selected File:</h3>
+          <p>Name: {file.name}</p>
+          <p>Type: {file.type}</p>
+          <p>Size: {file.size} bytes</p>
+        </div>
+      )}
+
+      <br />
+
       <br />
       <label className="font-mono text-2xl" htmlFor="name">Book Name:</label>
       <input

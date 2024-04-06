@@ -1,27 +1,45 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBMKQH83gq-7tFT9-I3kTvrJNJEJE2t4TA",
-  authDomain: "booklibrary-86381.firebaseapp.com",
-  databaseURL: "https://booklibrary-86381-default-rtdb.firebaseio.com",
-  projectId: "booklibrary-86381",
-  storageBucket: "booklibrary-86381.appspot.com",
-  messagingSenderId: "49992018878",
-  appId: "1:49992018878:web:2d20233f2687d3cae167ef"
-};
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
+import { db } from './firebase.js'
 
 export default function Home() {
+  const [books, set_books] = useState([])
+  async function get_books() {
+    const books_ref = collection(db, "books");
+    const q = query(books_ref, orderBy("name"), limit(3));
+    const query_snapshot = await getDocs(q);
+    let books_ = []
+    query_snapshot.forEach((doc) => {
+      books_.push(doc.data())
+    });
+    set_books(books_)
+  }
+  useEffect(() => {
+    get_books()
+    return () => {
+      //
+    };
+  }, []);
+
+  get_books()
   return (
     <main>
-    <h1 className="font-mono text-5xl">Tiny Library📚</h1>
+      <h1 className="font-mono text-5xl">Tiny Library📚</h1>
       <br />
-      <Link className="font-mono text-2xl" href="/upload"><u>Upload page📁</u></Link>
+      <Link className="font-mono text-1xl" href="/upload">
+        <u>Go to upload page📁</u>
+      </Link>
+      <br />
+      <div>
+        <h2 className='font-mono text-2xl'>List of Books</h2>
+        <ul className='font-mono'>
+          {books.map((item, index) => (
+            <li key={index}><a href='google.com' target="_blank"className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
+          ))}
+        </ul>
+      </div>
+
     </main>
   );
 }

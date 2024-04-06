@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState } from "react";
-import { db } from '../index.js'
+import { db } from '../firebase.js'
 import { doc, setDoc } from "firebase/firestore";
 
 export default function AboutPage() {

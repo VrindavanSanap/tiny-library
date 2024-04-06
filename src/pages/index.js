@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
@@ -25,15 +26,18 @@ export default function Home() {
   get_books()
   return (
     <main>
-      <div className='ml-10 mt-10'>
+      <Head>
+        <title>Tiny Library📚</title>
+      </Head>
+      <div className='font-mono ml-10 mt-10'>
         <h1 className="font-mono text-5xl">Tiny Library📚</h1>
-        <br />
-        <Link className="font-mono text-2xl" href="/upload">
-          <u>Go to uploads page📁</u>
-        </Link>
-        <br />
-        <br />
-        <div className='ml-10'>
+        <div className="text-2xl ml-2 mt-5">
+          <Link href="/upload">
+            <u>Go to uploads page📁</u>
+          </Link>
+
+        </div>
+        <div className='ml-10 mt-5'>
           <h2 className='font-mono text-2xl '>List of Books</h2>
           <ul className='font-mono '>
             {books.map((item, index) => (

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { db } from '../firebase.js'
 import { doc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { confetti } from '@tsparticles/confetti';
 
 export default function UploadPage() {
 
@@ -37,7 +38,13 @@ export default function UploadPage() {
         });
 
 
-        console.log('Uploaded a blob or file!');
+        set_upload_completed(true);
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.75 },
+
+        });
       } catch (error) {
         console.error('Error uploading file:', error);
       }
@@ -80,7 +87,7 @@ export default function UploadPage() {
       />
       <br />
       <br />
-      <h3>Finished upload YAY!!</h3>
+      <h3 className="font-mono text-1xl">{upload_completed && "Finished upload YAY!!"}</h3>
       <button
         className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2" onClick={handle_upload_click}>
         Upload

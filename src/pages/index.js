@@ -7,7 +7,7 @@ export default function Home() {
   const [books, set_books] = useState([])
   async function get_books() {
     const books_ref = collection(db, "books");
-    const q = query(books_ref, orderBy("name"), limit(3));
+    const q = query(books_ref, orderBy("name"), limit(10));
     const query_snapshot = await getDocs(q);
     let books_ = []
     query_snapshot.forEach((doc) => {
@@ -35,7 +35,7 @@ export default function Home() {
         <h2 className='font-mono text-2xl'>List of Books</h2>
         <ul className='font-mono'>
           {books.map((item, index) => (
-            <li key={index}><a href='google.com' target="_blank"className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
+            <li key={index}><a href={item.downloadURL} target="_blank"className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
           ))}
         </ul>
       </div>

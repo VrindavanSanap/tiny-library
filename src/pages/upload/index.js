@@ -2,16 +2,21 @@ import Link from 'next/link'
 import { useState } from "react";
 import { db } from '../firebase.js'
 import { doc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export default function AboutPage() {
+export default function UploadPage() {
+
   const [file, set_file] = useState(null);
   const [name, set_name] = useState("");
+
+  const storage = getStorage();
+
   const handle_file_change = (event) => {
     const file_ = event.target.files[0];
     // Check if a file is selected and if it is a PDF file
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
-      set_name(file_.name.slice(0,-4))
+      set_name(file_.name.slice(0, -4))
     } else {
       alert('Please select a PDF file.');
     }
@@ -19,11 +24,29 @@ export default function AboutPage() {
 
 
   async function handle_upload_click() {
-    if (name) {
-      await setDoc(doc(db, "books", name), {
-        name: name
-      });
+    if (name && file) {
+      try {
+        // Set document in Firestore
+        const storage_ref = ref(storage, `books/${name}`);
+        const snapshot = await uploadBytes(storage_ref, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        console.log(snapshot.metadata)
+        await setDoc(doc(db, "books", name), {
+          name: name,
+          downloadURL: downloadURL, // Add download URL to metadata
+          // metadata: snapshot.metadata
+
+        });
+
+
+        console.log('Uploaded a blob or file!');
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    } else {
+      console.log('Name or file is missing.');
     }
+
   }
 
 

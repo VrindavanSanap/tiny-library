@@ -8,7 +8,7 @@ export default function UploadPage() {
 
   const [file, set_file] = useState(null);
   const [name, set_name] = useState("");
-
+  const [upload_completed, set_upload_completed] = useState(false);
   const storage = getStorage();
 
   const handle_file_change = (event) => {
@@ -33,9 +33,7 @@ export default function UploadPage() {
         console.log(snapshot.metadata)
         await setDoc(doc(db, "books", name), {
           name: name,
-          downloadURL: downloadURL, // Add download URL to metadata
-          // metadata: snapshot.metadata
-
+          downloadURL: downloadURL,
         });
 
 
@@ -82,7 +80,11 @@ export default function UploadPage() {
       />
       <br />
       <br />
-      <button className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2" onClick={handle_upload_click}>Upload</button>
+      <h3>Finished upload YAY!!</h3>
+      <button
+        className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2" onClick={handle_upload_click}>
+        Upload
+      </button>
     </div>
   )
 }

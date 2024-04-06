@@ -62,7 +62,7 @@ export default function UploadPage() {
       <Link className="font-mono text-2xl " href="/"><u>Home</u></Link>
       <h1 className="font-mono text-5xl">Upload Page📁</h1>
       <br />
-      <input type="file" accept=".pdf" onChange={handle_file_change} />
+      <input type="file" accept="application/pdf" onChange={handle_file_change} />
       {file && (
         <div className='font-mono'>
           <h3>Selected File:</h3>

@@ -27,7 +27,9 @@ export default function Home() {
   return (
     <main>
       <Head>
-        <title>Tiny Library📚</title>
+        <title>Tiny Library</title>
+        <link rel="icon" href="/favicon.ico" />
+
       </Head>
       <div className='font-mono ml-10 mt-10'>
         <h1 className="font-mono text-5xl">Tiny Library📚</h1>

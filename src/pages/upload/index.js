@@ -17,7 +17,7 @@ export default function UploadPage() {
     const file_ = event.target.files[0];
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
-      set_name(file_.name.slice(0, -4))
+      set_name(file_.name)
     } else {
       alert('Please select a PDF file.');
     }
@@ -29,11 +29,14 @@ export default function UploadPage() {
       try {
         // Set document in Firestore
         const storage_ref = ref(storage, `books/${name}`);
-        const snapshot = await uploadBytes(storage_ref, file);
+        const metadata = {
+          contentType: 'application/pdf',
+        };
+
+        const snapshot = await uploadBytes(storage_ref, file, metadata);
         const downloadURL = await getDownloadURL(snapshot.ref);
-        console.log(snapshot.metadata)
         await setDoc(doc(db, "books", name), {
-          name: name,
+          name: name.slice(0, -4),
           downloadURL: downloadURL,
         });
 

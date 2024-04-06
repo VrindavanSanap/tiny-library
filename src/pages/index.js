@@ -28,7 +28,7 @@ export default function Home() {
     <main>
       <Head>
         <title>Tiny Library</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="./favicon.ico" />
 
       </Head>
       <div className='font-mono ml-10 mt-10'>

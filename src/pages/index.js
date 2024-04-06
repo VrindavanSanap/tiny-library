@@ -25,21 +25,23 @@ export default function Home() {
   get_books()
   return (
     <main>
-      <h1 className="font-mono text-5xl">Tiny Library📚</h1>
-      <br />
-      <Link className="font-mono text-1xl" href="/upload">
-        <u>Go to upload page📁</u>
-      </Link>
-      <br />
-      <div>
-        <h2 className='font-mono text-2xl'>List of Books</h2>
-        <ul className='font-mono'>
-          {books.map((item, index) => (
-            <li key={index}><a href={item.downloadURL} target="_blank"className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
-          ))}
-        </ul>
+      <div className='ml-10 mt-10'>
+        <h1 className="font-mono text-5xl">Tiny Library📚</h1>
+        <br />
+        <Link className="font-mono text-2xl" href="/upload">
+          <u>Go to uploads page📁</u>
+        </Link>
+        <br />
+        <br />
+        <div className='ml-10'>
+          <h2 className='font-mono text-2xl '>List of Books</h2>
+          <ul className='font-mono '>
+            {books.map((item, index) => (
+              <li key={index}><a href={item.downloadURL} target="_blank" className='underline ml-5 text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
+            ))}
+          </ul>
+        </div>
       </div>
-
     </main>
   );
 }

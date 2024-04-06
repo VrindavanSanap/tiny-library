@@ -57,9 +57,9 @@ export default function UploadPage() {
 
 
   return (
-    <div>
+    <div className='ml-10 mt-10'>
 
-      <Link className="font-mono text-2xl" href="/"><u>Home</u></Link>
+      <Link className="font-mono text-2xl " href="/"><u>Home</u></Link>
       <h1 className="font-mono text-5xl">Upload Page📁</h1>
       <br />
       <input type="file" accept=".pdf" onChange={handle_file_change} />

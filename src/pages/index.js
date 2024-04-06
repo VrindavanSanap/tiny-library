@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
-import { db } from './firebase.js'
+import { db } from '../firebase.js'
 
 export default function Home() {
   const [books, set_books] = useState([])

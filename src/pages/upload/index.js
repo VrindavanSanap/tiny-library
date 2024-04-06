@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useState } from "react";
-import { db } from '../firebase.js'
+import { db } from '../../firebase'
 import { doc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { confetti } from '@tsparticles/confetti';
@@ -13,8 +13,8 @@ export default function UploadPage() {
   const storage = getStorage();
 
   const handle_file_change = (event) => {
+    set_upload_completed(false)
     const file_ = event.target.files[0];
-    // Check if a file is selected and if it is a PDF file
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
       set_name(file_.name.slice(0, -4))
@@ -87,9 +87,10 @@ export default function UploadPage() {
       />
       <br />
       <br />
-      <h3 className="font-mono text-1xl">{upload_completed && "Finished upload YAY!!"}</h3>
+      <h3 className="font-mono text-1xl">{upload_completed && "Finished upload YAY!!🎉"}</h3>
       <button
-        className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2" onClick={handle_upload_click}>
+        className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2"
+        onClick={handle_upload_click}>
         Upload
       </button>
     </div>

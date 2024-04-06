@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 import { db } from '../firebase.js'
-
+import { book } from './components/book.js'
 export default function Home() {
   const [books, set_books] = useState([])
   async function get_books() {
@@ -16,14 +16,10 @@ export default function Home() {
     });
     set_books(books_)
   }
-  useEffect(() => {
-    get_books()
-    return () => {
-      //
-    };
-  }, []);
 
-  get_books()
+  useEffect(() => {
+    get_books();
+  }, []); // empty dependency array
   return (
     <main>
       <Head>
@@ -42,9 +38,16 @@ export default function Home() {
         <div className='ml-10 mt-5'>
           <h2 className='font-mono text-2xl '>List of Books</h2>
           <ul className='font-mono '>
+
             {books.map((item, index) => (
-              <li key={index}><a href={item.downloadURL} target="_blank" className='underline ml-5 text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
-            ))}
+              <>
+                <book name={item.name} href={item.downloadURL} />
+
+                <li key={index}><a href={item.downloadURL} target="_blank" className='underline ml-5 text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
+              </>
+            ))
+
+            }
           </ul>
         </div>
       </div>

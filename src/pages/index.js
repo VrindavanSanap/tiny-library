@@ -10,9 +10,11 @@ import { doc, getDoc, deleteDoc } from "firebase/firestore"
 export default function Home() {
   const [books, set_books] = useState([])
   const [error, set_error] = useState(false)
+  const [getting_books, set_getting_books] = useState(true)
   const storage = getStorage()
 
   async function get_books() {
+    set_getting_books(true)
     try {
       const books_ref = collection(db, "books");
       const q = query(books_ref, orderBy("name"), limit(10));
@@ -24,8 +26,8 @@ export default function Home() {
       set_books(books_)
     } catch (e) {
       set_error(e.toString())
-
     }
+    set_getting_books(false)
   }
   async function delete_book(doc_name, storage_ref) {
     await deleteDoc(doc(db, "books", doc_name))
@@ -46,26 +48,32 @@ export default function Home() {
       return <></>;
     }
   }
-  
+
   useEffect(() => {
     get_books();
   }, []); // empty dependency array
   return (
-    <main>
+    <main className='font-mono'>
       <Head>
         <title>Tiny Library</title>
         <link rel="icon" href="./favicon.ico" />
       </Head>
-      <div className='font-mono ml-10 mt-10'>
-        <h1 className="font-mono text-5xl">Tiny Library📚</h1>
+      <div className='ml-10 mt-10'>
+        <h1 className="text-5xl">Tiny Library📚</h1>
         <div className="text-2xl ml-2 mt-5">
           <Link href="/upload">
             <u>Go to uploads page📁</u>
           </Link>
         </div>
-        <div className='ml-10 mt-5'>
-          <h2 className='font-mono text-2xl '>List of Books</h2>
-          <ul className='font-mono ml-5 mt-2'>
+        <div className='ml-5 mt-5'>
+          <h2 className='text-2xl ml'>List of Books</h2>
+          {getting_books && (
+            <h2 className='text-xl ml-5 mt-2'>
+              Getting books...
+            </h2>
+          )}
+
+          <ul className='ml-4 mt-2'>
 
             {books.map((item, index) => (
               <Book

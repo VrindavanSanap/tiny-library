@@ -75,12 +75,14 @@ export default function UploadPage() {
         type="file"
         accept=".pdf"
         onChange={handle_file_change}
-        className='block w-full 
+        className='
+        block w-full 
       file:mr-4 file:py-2 file:px-4
        file:border-0
       file:text-sm file:font-semibold
       file:bg-blue-50 file:text-blue-700
-      hover:file:bg-blue-200'
+      hover:file:bg-blue-200
+      '
       />
       {file && (
         <div className='font-mono'>
@@ -107,7 +109,7 @@ export default function UploadPage() {
       <h3 className="font-mono text-1xl mt-2">{uploading && "Uploading..."}</h3>
       <h3 className="font-mono text-1xl mt-2">{upload_completed && "Finished upload YAY!!🎉"}</h3>
       <button
-        className="font-mono mt-2 bg-blue-500 hover:bg-blue-700 text-white py-1 px-2"
+        className="inline-flex items-center justify-center px-3 py-2 text-base font-medium leading-6 text-blue-600 whitespace-no-wrap bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:shadow-none"
         onClick={handle_upload_click}>
         Upload
       </button>

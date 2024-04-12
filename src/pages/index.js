@@ -3,24 +3,38 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 import { db } from '../firebase.js'
-import Book  from './components/book.js'
+import Book from './components/book.js'
 export default function Home() {
   const [books, set_books] = useState([])
   const [error, set_error] = useState(false)
 
   async function get_books() {
-    try{
-    const books_ref = collection(db, "books");
-    const q = query(books_ref, orderBy("name"), limit(10));
-    const query_snapshot = await getDocs(q);
-    let books_ = []
-    query_snapshot.forEach((doc) => {
-      books_.push(doc.data())
-    });
-    set_books(books_)
-    }catch(e){
+    try {
+      console.log("here")
+      const books_ref = collection(db, "books");
+      const q = query(books_ref, orderBy("name"), limit(10));
+      const query_snapshot = await getDocs(q);
+      let books_ = []
+      query_snapshot.forEach((doc) => {
+        books_.push(doc.data())
+      });
+      set_books(books_)
+    } catch (e) {
       set_error(e.toString())
 
+    }
+  }
+  function Error_component(props) {
+    const error_ = props.error;
+    if (error_) {
+      return (
+        <div className='ml-5 text-red-500'>
+          <b className='text-red-600'>Error:</b>
+          {`${error_}`}
+        </div>
+      )
+    } else {
+      return <></>;
     }
   }
 
@@ -45,20 +59,11 @@ export default function Home() {
           <ul className='font-mono '>
 
             {books.map((item, index) => (
-              <>
                 <Book name={item.name} href={item.downloadURL} />
-
-                <li key={index}><a href={item.downloadURL} target="_blank" className='underline ml-5 text-blue-600 hover:text-blue-800 visited:text-purple-600 cursor-pointer'>{item.name}</a></li>
-              </>
-            ))
-
-            }
+            ))}
           </ul>
-          <div className='ml-5 text-red-500'>
-            <b className='text-red-600'>Error:</b>
-            {error ?? `${error}`}
-          </div>
         </div>
+        <Error_component error={error} />
       </div>
     </main>
   );

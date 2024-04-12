@@ -1,4 +1,4 @@
-export default function Book(props) {
+export  function Book(props) {
 
 
     return (

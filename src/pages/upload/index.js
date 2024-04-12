@@ -5,7 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { confetti } from '@tsparticles/confetti';
 
-export default function UploadPage() {
+export function UploadPage() {
 
   const [file, set_file] = useState(null);
   const [name, set_name] = useState("");

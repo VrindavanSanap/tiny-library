@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { useState } from "react";
 import { db } from '../../firebase'
 import { doc, setDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { confetti } from '@tsparticles/confetti';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from '../../firebase';
 
 export default function UploadPage() {
 
@@ -11,14 +12,13 @@ export default function UploadPage() {
   const [name, set_name] = useState("");
   const [uploading, set_uploading] = useState(false);
   const [upload_completed, set_upload_completed] = useState(false);
-  const storage = getStorage();
 
   const handle_file_change = (event) => {
     set_upload_completed(false)
     const file_ = event.target.files[0];
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
-      set_name(file_.name.slice(0,-4))
+      set_name(file_.name.slice(0, -4))
     } else {
       alert('Please select a PDF file.');
     }

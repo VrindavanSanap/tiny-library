@@ -7,9 +7,8 @@ import Book from './components/book.js'
 export default function Home() {
   const [books, set_books] = useState([])
   const [error, set_error] = useState(false)
-  const [loading, set_loading] = useState(false)
+
   async function get_books() {
-    set_loading(true)
     try {
       console.log("here")
       const books_ref = collection(db, "books");
@@ -24,7 +23,6 @@ export default function Home() {
       set_error(e.toString())
 
     }
-    set_loading(false)
   }
   function Error_component(props) {
     const error_ = props.error;
@@ -58,11 +56,10 @@ export default function Home() {
         </div>
         <div className='ml-10 mt-5'>
           <h2 className='font-mono text-2xl '>List of Books</h2>
-          <h3 className="font-mono text-1xl ml-5 mt-2">{loading&& "Loading..."}</h3>
           <ul className='font-mono ml-5 mt-2'>
 
             {books.map((item, index) => (
-              <Book name={item.name} href={item.downloadURL} />
+                <Book name={item.name} href={item.downloadURL} />
             ))}
           </ul>
         </div>

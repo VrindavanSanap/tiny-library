@@ -4,13 +4,16 @@ import Link from 'next/link'
 import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 import { db } from '../firebase.js'
 import Book from './components/book.js'
+import { getStorage, ref, deleteObject } from "firebase/storage"
+import { doc, getDoc, deleteDoc } from "firebase/firestore"
+
 export default function Home() {
   const [books, set_books] = useState([])
   const [error, set_error] = useState(false)
+  const storage = getStorage()
 
   async function get_books() {
     try {
-      console.log("here")
       const books_ref = collection(db, "books");
       const q = query(books_ref, orderBy("name"), limit(10));
       const query_snapshot = await getDocs(q);
@@ -23,6 +26,12 @@ export default function Home() {
       set_error(e.toString())
 
     }
+  }
+  async function delete_book(doc_name, storage_ref) {
+    await deleteDoc(doc(db, "books", doc_name))
+    const file_ref = ref(storage, storage_ref);
+    await deleteObject(file_ref)
+    await get_books()
   }
   function Error_component(props) {
     const error_ = props.error;
@@ -37,7 +46,7 @@ export default function Home() {
       return <></>;
     }
   }
-
+  
   useEffect(() => {
     get_books();
   }, []); // empty dependency array
@@ -59,7 +68,13 @@ export default function Home() {
           <ul className='font-mono ml-5 mt-2'>
 
             {books.map((item, index) => (
-                <Book name={item.name} href={item.downloadURL} />
+              <Book
+                key={index}
+                name={item.name}
+                storage_ref={item.ref}
+                doc_name={item.doc_name}
+                callback={delete_book}
+                href={item.downloadURL} />
             ))}
           </ul>
         </div>

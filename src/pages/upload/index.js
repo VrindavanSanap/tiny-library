@@ -18,7 +18,7 @@ export default function UploadPage() {
     const file_ = event.target.files[0];
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
-      set_name(file_.name.slice(0,-4))
+      set_name(file_.name)
     } else {
       alert('Please select a PDF file.');
     }
@@ -36,10 +36,13 @@ export default function UploadPage() {
         };
 
         const snapshot = await uploadBytes(storage_ref, file, metadata);
+        
         const downloadURL = await getDownloadURL(snapshot.ref);
         await setDoc(doc(db, "books", name), {
+          doc_name: name,
           name: name.slice(0, -4),
           downloadURL: downloadURL,
+          ref: snapshot.metadata.fullPath,
         });
 
 

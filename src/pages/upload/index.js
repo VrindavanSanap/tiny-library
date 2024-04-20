@@ -9,6 +9,7 @@ export default function UploadPage() {
 
   const [file, set_file] = useState(null);
   const [name, set_name] = useState("");
+  const [uploading, set_uploading] = useState(false);
   const [upload_completed, set_upload_completed] = useState(false);
   const storage = getStorage();
 
@@ -17,7 +18,7 @@ export default function UploadPage() {
     const file_ = event.target.files[0];
     if (file_ && file_.type === 'application/pdf') {
       set_file(file_);
-      set_name(file_.name)
+      set_name(file_.name.slice(0,-4))
     } else {
       alert('Please select a PDF file.');
     }
@@ -25,6 +26,7 @@ export default function UploadPage() {
 
 
   async function handle_upload_click() {
+    set_uploading(true)
     if (name && file) {
       try {
         // Set document in Firestore
@@ -55,17 +57,28 @@ export default function UploadPage() {
       console.log('Name or file is missing.');
     }
 
+    set_uploading(false)
   }
 
 
 
   return (
-    <div className='ml-10 mt-10'>
+    <div className='font-mono ml-10 mt-10'>
 
-      <Link className="font-mono text-2xl " href="/"><u>Home</u></Link>
-      <h1 className="font-mono text-5xl">Upload Page📁</h1>
+      <Link className=" text-2xl " href="/"><u>Home</u></Link>
+      <h1 className="font-mono text-5xl">Upload book</h1>
       <br />
-      <input type="file" accept="application/pdf" onChange={handle_file_change} />
+      <input
+        type="file"
+        accept=".pdf"
+        onChange={handle_file_change}
+        className='block w-full 
+      file:mr-4 file:py-2 file:px-4
+       file:border-0
+      file:text-sm file:font-semibold
+      file:bg-blue-50 file:text-blue-700
+      hover:file:bg-blue-200'
+      />
       {file && (
         <div className='font-mono'>
           <h3>Selected File:</h3>
@@ -88,11 +101,10 @@ export default function UploadPage() {
         value={name}
         onChange={(e) => set_name(e.target.value)}
       />
-      <br />
-      <br />
-      <h3 className="font-mono text-1xl">{upload_completed && "Finished upload YAY!!🎉"}</h3>
+      <h3 className="font-mono text-1xl mt-2">{uploading && "Uploading..."}</h3>
+      <h3 className="font-mono text-1xl mt-2">{upload_completed && "Finished upload YAY!!🎉"}</h3>
       <button
-        className="font-mono bg-blue-500 hover:bg-blue-700 text-white py-1 px-2"
+        className="font-mono mt-2 bg-blue-500 hover:bg-blue-700 text-white py-1 px-2"
         onClick={handle_upload_click}>
         Upload
       </button>

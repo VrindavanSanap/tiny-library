@@ -56,7 +56,7 @@ export default function Home() {
         </div>
         <div className='ml-10 mt-5'>
           <h2 className='font-mono text-2xl '>List of Books</h2>
-          <ul className='font-mono '>
+          <ul className='font-mono ml-5 mt-2'>
 
             {books.map((item, index) => (
                 <Book name={item.name} href={item.downloadURL} />
